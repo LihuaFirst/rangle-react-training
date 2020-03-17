@@ -3,15 +3,25 @@ import React, {Component} from 'react';
 import './App.css';
 import CardList from './components/CardList';
 import SearchBox from "./components/SearchBox";
-import robots from "./data/robots";
+//import {robots} from "./data/robots";
+import {apiCall} from "./data/apiCall";
 
 class App extends Component {
   constructor() {
     super();
     this.state ={
       searchTerm: "",
-      robots: robots
+      robots: []
     }
+  }
+  componentDidMount() {
+    apiCall("https://jsonplaceholder.typicode.com/users")
+      .then(response =>
+        this.setState({
+          robots: response,
+          isPending: false
+        })
+      )
   }
   onSearchChange =(evt) => {
     this.setState({searchTerm: evt.target.value});
@@ -30,7 +40,4 @@ class App extends Component {
     )
   }
 }
-
-
-
 export default App;
